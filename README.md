@@ -14,6 +14,19 @@ Once the AI ran away a certain distance, it will try to go back to the group.
 
 ## Difficulties in Development
 ### FSM
-
+Since I am using Scriptable Objects, and since SO are stored as assets and assets cannot reference objects in a live scene, only the other way around, I cannot just give the SO a list of the patrolPoints, instead, I had to give the AI the list of patrolPoints.
 
 ### BT
+Ever since the beginning, the AI did not wanted to change between states, and it will only patrol regardless of how many units were around. Not only that, but, if the AI detected multiple units (either 3 or 5, did not matter which one) the navMesh broke and the AI no longer cycle through the patrolPoints, instead just staying in its present point. Not only that, but the code only tried to detect the units when starting the scene, which complicated things even further, as it only tried to change between leaves at the start, and if it didn't detect enough, it went to patrol (as intended), however, if at any point it detected any amount of units necessary to change leaf (3 or 5), it didn't change and continue patroling, but this time not cycling through its patrolPoints. Both of these were later fixed, one by forcing the patrolPoint to cycle, and the other one by changing some stuff inside the `Strategies.cs` and forcing the AI to check every frame. 
+
+## Which One was better?
+**FSM.**
+
+This is because, in this case, changing between the 3 states (Patrol  --  Approach  --  Flee) is much easier to read and modify. This is because it only needed transitions between each state, while the BT needed to be reset carefully otherwise it will not work as intended, and it is also much more difficult to understand.
+
+## Diagrams
+### FSM
+<img width="510" height="709" alt="FSM drawio" src="https://github.com/user-attachments/assets/818e3af2-9109-4877-83d3-683eeb71ccc2" />
+
+### BT
+<img width="501" height="721" alt="BT drawio" src="https://github.com/user-attachments/assets/aee990f1-2d17-4b48-bdfb-6c3889763021" />
